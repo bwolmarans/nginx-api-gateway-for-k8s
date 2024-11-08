@@ -11,7 +11,8 @@ This is updated from the original work by Tony Marfil.
 - I couldn't get the existing jwt creation script to work, so I made another one based off Liam's JWT blog and it's in task_05 and works well
 - I added a logging profile to the NAP config so you can now see the security event logs to stderr using normal kubectl logs commands
   
-- on the k8s box, do these things before you start the tasks (but don't copy and paste this entire block of commands, do it one at a time)
+- on the k8s box,hopefully all of these have been done for you in the UDF you are using, but just in case, you might need to do these things before you start the tasks
+- (but don't copy and paste this entire block of commands, do it one at a time)
 
 ```bash
 su ubuntu
@@ -33,7 +34,8 @@ install nginx oss
 ```bash
 sudo apt-get install nginx ( just to make the k8s port fwding to the NIC N+ dashboard easier )
 ```
-- using root or sudo add this server block to /etc/nginx/nginx.conf right before the virtual hosts section and restart nginx
+
+- check /etc/nginx/nginx.conf first because this should have been done in the UDF you are using, if not using root or sudo add this server block to /etc/nginx/nginx.conf right before the virtual hosts section and restart nginx
   
   ```bash
         server {
