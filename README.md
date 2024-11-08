@@ -22,3 +22,17 @@ microk8s config > confi
 
 - There are several utilities in the bin subdirectory.
 - to start fresh do bin/list-all-k8s-lab-resources.sh --start-over
+- add this server block to /etc/nginx/nginx.conf right before the virtual hosts section
+  ```bash
+        server {
+          listen 8081 default_server;  
+          location / {
+            proxy_bind 127.0.0.1;
+            proxy_pass http://127.0.0.1:8080;
+          }  
+        }
+  ```
+  ```bash
+  sudo nginx -s reload
+  ```
+  
