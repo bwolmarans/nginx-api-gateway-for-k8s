@@ -1,4 +1,4 @@
-wget https://raw.githubusercontent.com/bwolmarans/nginx-api-gateway-for-k8s/main/jumphost/k6-jobs.js
+wget https://raw.githubusercontent.com/bwolmarans/nginx-api-gateway-for-k8s/task_06/k6-jobs.js
 
 The rate-limiting key is the Authorization header. Every unique user will be 
 rate-limited based on their unique Authorization header (JWT).
