@@ -87,14 +87,16 @@ echo $SUPPORT_ID
 kubectl logs -n nginx-ingress `kubectl get pods -o=jsonpath='{.items..metadata.name}' -n nginx-ingress` | grep $SUPPORT_ID | sed 's/,/\n/g' | grep ^violations=
 
 
-Waf Evasion
------------
+Waf Evasion for bad thing 1: curl
+--------------------------------------
 Let's make curl more "Browser Like" using a set of headers, and you can take a look at headers.txt to see these headers that make curl look more like firefox.
 
 curl -H @headers.txt -k https://jobs.local/add-job 
 
 Now we have evaded the WAF policy.  A more complex bot defense policy, based on multiple factors beyond simple headers, would be used to combat this.
 That is outside the scope of this lab, so we will stop here.
+
+By the way, just adding these headers will not evade the mitigations in place for bad things 2 and 3. 
 
 
 
