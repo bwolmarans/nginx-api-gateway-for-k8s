@@ -1,12 +1,61 @@
 We are now going to apply NGINX App Protect WAF. Starting with a logging profile so we can see waf event logs on stderr.
 
-I suggest take a look at each of these yaml files to understand what they are doing.
+The first use case for NAP is to block non-browser clients.
 
+export SUPPORT_ID=$(curl -k https://jobs.local/get-jobs | jq .supportID)
+echo $SUPPORT_ID
+kubectl logs -n nginx-ingress nginx-ingress-jccr9 | grep $SUPPORT_ID | sed 's/,/\n/g'
+
+You'll see at  the top of the event log, it's a non-browser client attack.
+
+attack_type="Non-browser Client
+
+So repeat the curl with a more "Browser Like" set of headers, and you can take a look at headers.txt to see these headers that make curl look more like firefox.
+
+curl -H @headers.txt -k https://jobs.local/get-jobs
+
+
+is to enforce the API Spec, so API abuse is prevented.  See the OWASP API Top 10 for more information.
+
+curl -k https://jobs.local/add-job -X POST --data '[99, false]'  -H "content-type: application/json"
+
+We just abused the business log of this API, by adding a number and a boolean, but our API should only be accepting text strings at the /add-job API endpoint, according to this line in the API spec file which you can find at https://raw.githubusercontent.com/bwolmarans/nginx-api-gateway-for-k8s/main/task_04/jobs-openapi-spec.yaml
+
+  /add-job:
+    post:
+      summary: Add New Job(s)
+      description: Adds new job(s) to the eclectic jobs list. Expects an array of job titles.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                example: Software Developer
+
+
+
+We're going to use NAP to fix this abuse. 
+
+Please take a look at each of these yaml files to understand what they are doing.
 
 k apply -f logging.yaml
 kubectl apply -f jobs-openapi-spec-appolicy.yaml
 kubectl apply -f app-protect-policy.yaml
 kubectl apply -f VirtualServer.yaml
+
+Now lets try the abuse again:
+
+curl -k https://jobs.local/add-job -X POST --data '[99, false]'  -H "content-type: application/json"
+
+NAP blocks it, and gives a support ID in the response body, but we'd like to see the waf event log itself.
+We can do that like this:
+
+export SUPPORT_ID=$(curl -k https://jobs.local/add-job -H @headers.txt --data '[99, false]'  -H "content-type: application/json" | jq .supportID)
+echo $SUPPORT_ID
+kubectl logs -n nginx-ingress nginx-ingress-jccr9 | grep $SUPPORT_ID | sed 's/,/\n/g'
 
 curl -k https://jobs.local/add-job -X POST --data '["jet pilot"]'
 
