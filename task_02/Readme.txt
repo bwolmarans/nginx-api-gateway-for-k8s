@@ -5,7 +5,7 @@ We will use the VirtualServer NIC custom resource for this.
 # /get-job # GET /get-job will return a random job title in json format from an ecclectic list of job titles
 # /add-job # POST /add-job will accept an array of job titles to add to the ecclectic list of possible job titles
 
-curl http://jobs.local/get-job <--this will fail, because the app isn't actually listening on /get-job.  
+curl http://jobs.local/get-job <--this will fail, because the app isn't actually listening on port 80, nor on /get-job.  
 We must configure our VirtualServer to look for /get-job and route the request to the correct microservice.
 
 bat VirtualServer_cleartext.yaml
@@ -13,7 +13,15 @@ bat VirtualServer_cleartext.yaml
 k apply -f VirtualServer_cleartext.yaml
 
 curl http://jobs.local/get-job
-curl -X POST http://jobs.local/add-job  <-- this is expected to error out because we need to add another microservice which we will do in the next task
+
+Here is what happened here, the flow:
+
+-The client requests https://jobs.local/get-job
+-The request resolves to GET http://10.1.1.4:80/get-job
+-The request is received by the NGINX Plus ingress listening on port 80
+-The NGINX Plus ingress rewrites URL path ‘/get-job’ to ‘/’ before sending to the eclectic-jobs service on port 3000
+-The https://jobs.local web application styles and renders the JSON response from https://jobs.local/get-job
+-The response is returned through NGINX Plus ingress back to the client
 
 curl -k https://jobs.local/get-job <-- this won't work because we're not listening on 443, yet.
 
