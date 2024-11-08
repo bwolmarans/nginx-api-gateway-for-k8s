@@ -20,11 +20,15 @@ kubectl logs -n nginx-ingress nginx-ingress-jccr9 | grep $SUPPORT_ID | sed 's/,/
 you can see the nap logs by checking stderr, because that logging profile sends nap logs to stderr.
 I could probably spin up a NIM with SM and a box with agent and somehow send the logs to SM with more time.
 
-you will see the security event is because curl is a non-browser client, so repeat the curl with a better user agent
+you will see the security event is because curl is a non-browser client, so repeat the curl with a more "Browser Like" set of headers:
 
 curl -H @headers.txt -k https://jobs.local/add-job --data '["jet pilot"]'
 
 
+
+
+
+# Small Note, can ignore if things are working:
 # This task failed ocassionally during testing because the nginx ingress pod (and all other pods on the microk8s cluster) were not able to resolve DNS.
 #
 # To test if this is the issue run the 'test-dns.sh' script.
