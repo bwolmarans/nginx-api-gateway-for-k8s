@@ -13,3 +13,6 @@ kubectl create secret tls jobs-local-tls --key jobs.local.key --cert jobs.local.
 bat VirtualServer.yaml
 
 k apply -f VirtualServer.yaml
+
+curl -k https://jobs.local/get-job
+curl -k -X POST https://jobs.local/add-job
