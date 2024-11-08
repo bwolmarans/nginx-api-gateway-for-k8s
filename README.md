@@ -8,6 +8,7 @@ This is updated from the original work by Tony Marfil.
 - where it says to use RDP and Firefox, instead if you want, you can use a single webshell on the k8s box for everything and use curl
 - in addition, you can also use the firefox access method on the jumphost it works well and has a little copy and paste widget to your local system on the left that works well
 - I couldn't get the existing jwt creation script to work, so I made another one based off Liam's JWT blog and it's in task_05 and works well
+- I added a logging profile to the NAP config so you can now see the security event logs to stderr using normal kubectl logs commands
   
 - on the k8s box, do these things before you start the tasks:
 
