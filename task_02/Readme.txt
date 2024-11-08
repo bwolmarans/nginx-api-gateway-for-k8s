@@ -58,6 +58,9 @@ By the way, keep the dashboard tab opena, and keep checking this for task_03, ta
 
 kubectl port-forward nginx-ingress-jccr9 8080:8080 --address 0.0.0.0 --namespace=nginx-ingress > /dev/null &
 
+You can just leave this running in the background for the rest of this entire lab.
+
+
 curl http://127.0.0.1:8081/ <-- you can hit this /dashboard.html in your browser using the UDF access method "NGINX Plus Dashboard" which listens on https 8081
 
 And here is the server block in that NGINX proxy I mentioned, this should already be configured if you're using the right UDF
