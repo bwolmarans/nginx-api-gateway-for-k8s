@@ -14,6 +14,8 @@ sudo apt-get install nginx ( just to make the k8s port fwding to the NIC N+ dash
 snap install kubectl --classic
 unalias kubectl
 unalias k
+alias k=kubectl
+alias h='history | grep'
 cd /home/ubuntu/.kube
 microk8s config > confi
 ``` 
