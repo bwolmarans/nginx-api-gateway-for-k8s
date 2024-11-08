@@ -12,7 +12,8 @@ This is updated from the original work by Tony Marfil.
   
 - on the k8s box, do these things before you start the tasks:
 
-```bash  
+```bash
+/home/ubuntu/nginx-api-gateway-for-k8s/bin/list-all-k8s-lab-resources.sh --start-over
 sudo snap install k6
 sudo apt-get install nginx ( just to make the k8s port fwding to the NIC N+ dashboard easier )
 snap install kubectl --classic
