@@ -2,14 +2,21 @@ We are now going to apply NGINX App Protect WAF.
 
 We're going to do some bad things, which all succeed.
 
-bad thing 1: OWASP Top 10 XSS
+bad thing 1: just curl
+----------------------
+curl is bad, it's a bot. 
+
+curl -k https://jobs.local/get-job
+
+
+bad thing 2: OWASP Top 10 XSS
 ------------------------------
 Let's do a basic XSS attack or recon or probe, see what we get:
 
 curl -k 'https://jobs.local/add-job?x=<script>cat%20/etc/passwd</script>' --data '["jet pilot"]' -H "content-type: application/json"
 
 
-bad thing 2: API abuse
+bad thing 3: API abuse
 ----------------------------------
 Let's do some API abuse, see the OWASP API Top 10 for more information.
 
@@ -43,50 +50,55 @@ kubectl apply -f VirtualServer.yaml
 
 Now lets try the bad things again:
 
-bad thing 1: OWASP Top 10 XSS
+
+bad thing 1: just curl
+----------------------
+curl is bad, it's a bot. 
+
+curl -k https://jobs.local/get-job
+
+NAP blocks it, and gives a support ID in the response body, but we'd like to see the waf event log itself.
+You can see the nap logs by checking stderr, because that logging profile sends nap logs to stderr.
+I could probably spin up a NIM with SM and a box with agent and somehow send the logs to SM with more time.
+We can do that like this:
+
+
+export SUPPORT_ID=$(curl -k 'https://jobs.local/get-job' | jq .supportID)
+echo $SUPPORT_ID
+kubectl logs -n nginx-ingress `kubectl get pods -o=jsonpath='{.items..metadata.name}' -n nginx-ingress` | grep $SUPPORT_ID | sed 's/,/\n/g' | grep ^violations=
+
+
+
+bad thing 2: OWASP Top 10 XSS
 ------------------------------
 curl -k 'https://jobs.local/add-job?x=<script>cat%20/etc/passwd</script>' --data '["jet pilot"]' -H "content-type: application/json"
 
-NAP blocks it, and gives a support ID in the response body, but we'd like to see the waf event log itself.
-We can do that like this:
-
 export SUPPORT_ID=$(curl -k 'https://jobs.local/add-job?x=<script>cat%20/etc/passwd</script>' --data '["jet pilot"]' -H "content-type: application/json" | jq .supportID)
 echo $SUPPORT_ID
-kubectl logs -n nginx-ingress `kubectl get pods -o=jsonpath='{.items..metadata.name}' -n nginx-ingress` | grep $SUPPORT_ID | sed 's/,/\n/g'
+kubectl logs -n nginx-ingress `kubectl get pods -o=jsonpath='{.items..metadata.name}' -n nginx-ingress` | grep $SUPPORT_ID | sed 's/,/\n/g' | grep ^violations=
 
 
-bad thing 2: API abuse
+bad thing 3: API abuse
 ----------------------------------
-
 curl -k https://jobs.local/add-job -X POST --data '[99, false]'  -H "content-type: application/json"
-
-NAP blocks it, and gives a support ID in the response body, but we'd like to see the waf event log itself.
-We can do that like this:
 
 export SUPPORT_ID=$(curl -X POST -k https://jobs.local/add-job --data '[99, false]'  -H "content-type: application/json" | jq .supportID)
 echo $SUPPORT_ID
-kubectl logs -n nginx-ingress `kubectl get pods -o=jsonpath='{.items..metadata.name}' -n nginx-ingress` | grep $SUPPORT_ID | sed 's/,/\n/g'
+kubectl logs -n nginx-ingress `kubectl get pods -o=jsonpath='{.items..metadata.name}' -n nginx-ingress` | grep $SUPPORT_ID | sed 's/,/\n/g' | grep ^violations=
 
 
-curl -k https://jobs.local/add-job -X POST --data '["jet pilot"]'
+Waf Evasion
+-----------
+Let's make curl more "Browser Like" using a set of headers, and you can take a look at headers.txt to see these headers that make curl look more like firefox.
 
-this will give a supportID, but how to see the waf event log?
+curl -H @headers.txt -k https://jobs.local/add-job 
 
-export SUPPORT_ID=$(curl -k https://jobs.local/add-job -X POST --data '["jet pilot"]' | jq .supportID)
-echo $SUPPORT_ID
+Now we have evaded the WAF policy.  A more complex bot defense policy, based on multiple factors beyond simple headers, would be used to combat this.
+That is outside the scope of this lab, so we will stop here.
 
-kubectl logs -n nginx-ingress `kubectl get pods -o=jsonpath='{.items..metadata.name}' -n nginx-ingress` | grep $SUPPORT_ID | sed 's/,/\n/g'
 
-you can see the nap logs by checking stderr, because that logging profile sends nap logs to stderr.
-I could probably spin up a NIM with SM and a box with agent and somehow send the logs to SM with more time.
 
-you will see the security event is because curl is a non-browser client, so repeat the curl with a more "Browser Like" set of headers, and you can take a look at headers.txt to see these headers that make curl look more like firefox.
 
-curl -H @headers.txt -k https://jobs.local/add-job --data '["jet pilot"]'
-
-However, because there is no waf, we can still do OWASP top 10 attacks like this XSS example:
-
-curl -H @headers.txt -k 'https://jobs.local/add-job?x=<script>cat%20/etc/passwd</script>' --data '["jet pilot"]'
 
 
 
