@@ -2,17 +2,18 @@ We are now going to apply NGINX App Protect WAF.
 
 We're going to do some bad things, which all succeed.
 
-bad thing 1: non-browser client
--------------------------------
-The first thing actually is the non-browser client we have been using, curl.   curl is bad.
+bad thing 1: OWASP Top 10 XSS
+------------------------------
+Let's do a basic XSS attack or recon or probe, see what we get:
 
-curl -k https://jobs.local/get-job
+curl -k 'https://jobs.local/add-job?x=<script>cat%20/etc/passwd</script>' --data '["jet pilot"]' -H "content-type: application/json"
+
 
 bad thing 2: API abuse
 ----------------------------------
 Let's do some API abuse, see the OWASP API Top 10 for more information.
 
-curl -k https://jobs.local/add-job -X POST --data '[99, false]'  -H "content-type: application/json"
+curl -k https://jobs.local/add-job -X POST --data '[99, false]' -H "content-type: application/json"
 
 We just abused the business log of this API, by adding a number and a boolean, but our API should only be accepting text strings at the /add-job API endpoint, according to this line in the API spec file which you can find at https://raw.githubusercontent.com/bwolmarans/nginx-api-gateway-for-k8s/main/task_04/jobs-openapi-spec.yaml
 
@@ -31,13 +32,6 @@ We just abused the business log of this API, by adding a number and a boolean, b
                 example: Software Developer
 
 
-bad thing 3: OWASP Top 10 XSS
-------------------------------
-
-Let's do a basic XSS attack or recon or probe, see what we get:
-
-curl -k 'https://jobs.local/add-job?x=<script>cat%20/etc/passwd</script>' --data '["jet pilot"]' -H "content-type: application/json"
-
 OK now let's configure NAP to take care of all three of these bot/abuse/hack/attack problems.
 
 Please take a look at each of these yaml files to understand what they are doing, and then apply them.
@@ -47,29 +41,32 @@ kubectl apply -f jobs-openapi-spec-appolicy.yaml
 kubectl apply -f app-protect-policy.yaml
 kubectl apply -f VirtualServer.yaml
 
-Now lets try the three bad things again:
+Now lets try the bad things again:
 
-curl -k https://jobs.local/get-job
+bad thing 1: OWASP Top 10 XSS
+------------------------------
+curl -k 'https://jobs.local/add-job?x=<script>cat%20/etc/passwd</script>' --data '["jet pilot"]' -H "content-type: application/json"
 
 NAP blocks it, and gives a support ID in the response body, but we'd like to see the waf event log itself.
 We can do that like this:
 
-export SUPPORT_ID=$(curl -k https://jobs.local/get-job | jq .supportID)
+export SUPPORT_ID=$(curl -k 'https://jobs.local/add-job?x=<script>cat%20/etc/passwd</script>' --data '["jet pilot"]' -H "content-type: application/json" | jq .supportID)
 echo $SUPPORT_ID
-kubectl logs -n nginx-ingress nginx-ingress-jccr9 | grep $SUPPORT_ID | sed 's/,/\n/g'
+kubectl logs -n nginx-ingress `kubectl get pods -o=jsonpath='{.items..metadata.name}' -n nginx-ingress` | grep $SUPPORT_ID | sed 's/,/\n/g'
 
 
-
-abuse again:
+bad thing 2: API abuse
+----------------------------------
 
 curl -k https://jobs.local/add-job -X POST --data '[99, false]'  -H "content-type: application/json"
 
 NAP blocks it, and gives a support ID in the response body, but we'd like to see the waf event log itself.
 We can do that like this:
 
-export SUPPORT_ID=$(curl -k https://jobs.local/add-job -H @headers.txt --data '[99, false]'  -H "content-type: application/json" | jq .supportID)
+export SUPPORT_ID=$(curl -X POST -k https://jobs.local/add-job --data '[99, false]'  -H "content-type: application/json" | jq .supportID)
 echo $SUPPORT_ID
-kubectl logs -n nginx-ingress nginx-ingress-jccr9 | grep $SUPPORT_ID | sed 's/,/\n/g'
+kubectl logs -n nginx-ingress `kubectl get pods -o=jsonpath='{.items..metadata.name}' -n nginx-ingress` | grep $SUPPORT_ID | sed 's/,/\n/g'
+
 
 curl -k https://jobs.local/add-job -X POST --data '["jet pilot"]'
 
@@ -78,7 +75,7 @@ this will give a supportID, but how to see the waf event log?
 export SUPPORT_ID=$(curl -k https://jobs.local/add-job -X POST --data '["jet pilot"]' | jq .supportID)
 echo $SUPPORT_ID
 
-kubectl logs -n nginx-ingress nginx-ingress-jccr9 | grep $SUPPORT_ID | sed 's/,/\n/g'
+kubectl logs -n nginx-ingress `kubectl get pods -o=jsonpath='{.items..metadata.name}' -n nginx-ingress` | grep $SUPPORT_ID | sed 's/,/\n/g'
 
 you can see the nap logs by checking stderr, because that logging profile sends nap logs to stderr.
 I could probably spin up a NIM with SM and a box with agent and somehow send the logs to SM with more time.
