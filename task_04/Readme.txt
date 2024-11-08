@@ -7,7 +7,11 @@ curl -k https://jobs.local/add-job -X POST --data ["Pro Skateboarder"]
 
 and now you can see the nap logs by doing the following because they are being sent to stderr:
 
-k logs -n nginx-ingress nginx-ingress-jccr9
+k logs -n nginx-ingress nginx-ingress-jccr9 | grep <support id> | split 's/,/\n/g'
+
+you will see it's a non-browser client, so repeat the curl with a better user agent
+
+curl -H @headers.txt -k https://jobs.local/add-job --data '["jet pilot"]'
 
 
 # This task failed ocassionally during testing because the nginx ingress pod (and all other pods on the microk8s cluster) were not able to resolve DNS.
