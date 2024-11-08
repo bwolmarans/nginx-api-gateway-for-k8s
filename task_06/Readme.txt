@@ -3,6 +3,8 @@ wget https://raw.githubusercontent.com/bwolmarans/nginx-api-gateway-for-k8s/main
 The rate-limiting key is the Authorization header. Every unique user will be 
 rate-limited based on their unique Authorization header (JWT).
 
+the JWT is already in the k6-jobs.js script, if you have a different JWT you will need to edit the script.
+
 k6 run k6-jobs.js --insecure-skip-tls-verify
 
 check the row http_reqs, it could be 800 to 1000 requests per second
