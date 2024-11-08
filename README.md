@@ -9,7 +9,7 @@ This is updated from the original work by Tony Marfil.
 - in addition, you can also use the firefox access method on the jumphost it works well and has a little copy and paste widget to your local system on the left that works well
 - I couldn't get the existing jwt creation script to work, so I made another one based off Liam's JWT blog and it's in task_05 and works well
   
-- on the k8s box, do these things:
+- on the k8s box, do these things before you start the tasks:
 
 ```bash  
 sudo snap install k6
