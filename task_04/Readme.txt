@@ -1,3 +1,15 @@
+k apply -f logging.yaml
+kubectl apply -f jobs-openapi-spec-appolicy.yaml
+kubectl apply -f app-protect-policy.yaml
+kubectl apply -f VirtualServer.yaml
+
+curl -k https://jobs.local/add-job -X POST --data ["Pro Skateboarder"]
+
+and now you can see the nap logs by doing the following because they are being sent to stderr:
+
+k logs -n nginx-ingress nginx-ingress-jccr9
+
+
 # This task failed ocassionally during testing because the nginx ingress pod (and all other pods on the microk8s cluster) were not able to resolve DNS.
 #
 # To test if this is the issue run the 'test-dns.sh' script.
@@ -9,8 +21,3 @@
 # [ERROR] plugin/errors: 2 8060823575723639096.697009577592649424. HINFO: read udp 10.1.35.156:56417->8.8.8.8:53: i/o timeout
 
 test-dns.sh
-kubectl apply -f jobs-openapi-spec-appolicy.yaml
-kubectl apply -f app-protect-policy.yaml
-kubectl apply -f VirtualServer.yaml
-
-curl -k https://jobs.local/add-job -X POST --data ["Pro Skateboarder"]
