@@ -6,4 +6,7 @@ spec:
   waf:
     enable: true
     apPolicy: "default/jobs-openapi-spec"
-
+    securityLogs:
+      - enable: true
+        apLogConf: "default/logconf"
+        logDest: "stderr"
