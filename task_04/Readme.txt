@@ -1,21 +1,16 @@
-We are now going to apply NGINX App Protect WAF. Starting with a logging profile so we can see waf event logs on stderr.
+We are now going to apply NGINX App Protect WAF. 
 
-The first use case for NAP is to block non-browser clients.
+We're going to do some bad things, which all succeed.
 
-export SUPPORT_ID=$(curl -k https://jobs.local/get-jobs | jq .supportID)
-echo $SUPPORT_ID
-kubectl logs -n nginx-ingress nginx-ingress-jccr9 | grep $SUPPORT_ID | sed 's/,/\n/g'
+bad thing 1: non-browser client
+-------------------------------
+The first thing actually is the non-browser client we have been using, curl.   curl is bad.
 
-You'll see at  the top of the event log, it's a non-browser client attack.
+curl -k https://jobs.local/get-job
 
-attack_type="Non-browser Client
-
-So repeat the curl with a more "Browser Like" set of headers, and you can take a look at headers.txt to see these headers that make curl look more like firefox.
-
-curl -H @headers.txt -k https://jobs.local/get-jobs
-
-
-is to enforce the API Spec, so API abuse is prevented.  See the OWASP API Top 10 for more information.
+bad thing 2: API abuse
+----------------------------------
+Let's do some API abuse, see the OWASP API Top 10 for more information.
 
 curl -k https://jobs.local/add-job -X POST --data '[99, false]'  -H "content-type: application/json"
 
@@ -36,17 +31,36 @@ We just abused the business log of this API, by adding a number and a boolean, b
                 example: Software Developer
 
 
+bad thing 3: OWASP Top 10 XSS
+------------------------------
 
-We're going to use NAP to fix this abuse. 
+Let's do a basic XSS attack or recon or probe, see what we get:
 
-Please take a look at each of these yaml files to understand what they are doing.
+curl -k 'https://jobs.local/add-job?x=<script>cat%20/etc/passwd</script>' --data '["jet pilot"]' -H "content-type: application/json"
+
+OK now let's configure NAP to take care of all three of these bot/abuse/hack/attack problems.
+
+Please take a look at each of these yaml files to understand what they are doing, and then apply them.
 
 k apply -f logging.yaml
 kubectl apply -f jobs-openapi-spec-appolicy.yaml
 kubectl apply -f app-protect-policy.yaml
 kubectl apply -f VirtualServer.yaml
 
-Now lets try the abuse again:
+Now lets try the three bad things again:
+
+curl -k https://jobs.local/get-job
+
+NAP blocks it, and gives a support ID in the response body, but we'd like to see the waf event log itself.
+We can do that like this:
+
+export SUPPORT_ID=$(curl -k https://jobs.local/get-job | jq .supportID)
+echo $SUPPORT_ID
+kubectl logs -n nginx-ingress nginx-ingress-jccr9 | grep $SUPPORT_ID | sed 's/,/\n/g'
+
+
+
+abuse again:
 
 curl -k https://jobs.local/add-job -X POST --data '[99, false]'  -H "content-type: application/json"
 
