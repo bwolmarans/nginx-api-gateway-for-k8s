@@ -1,4 +1,5 @@
 ---
+# has additional two violations set to non-blocking VIOL_HTTP_RESPONSE_STATUS and VIO_RATING_THREAT
 apiVersion: appprotect.f5.com/v1beta1
 kind: APPolicy
 metadata:
@@ -13,6 +14,12 @@ spec:
       - link: https://raw.githubusercontent.com/tmarfil/nginx-api-gateway-for-k8s/refs/heads/main/task_04/jobs-openapi-spec.yaml
     blocking-settings:
       violations:
+        - block: false
+          description: Violation rating
+          name: VIOL_RATING_THREAT
+        - block: false
+          description: Illegal HTTP status in response
+          name: VIOL_HTTP_RESPONSE_STATUS
         - block: true
           description: Disallowed file upload content detected in body
           name: VIOL_FILE_UPLOAD_IN_BODY
@@ -67,4 +74,3 @@ spec:
         - block: true
           description: Illegal repeated parameter name
           name: VIOL_PARAMETER_REPEATED
-
