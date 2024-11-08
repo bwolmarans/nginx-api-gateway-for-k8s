@@ -1,6 +1,9 @@
 So we have used NAP for some basic functionality, like OWASP, and Browser checking, and basic HTTP enforcement.
+So far, we have been able to make API requests without any authentication.
 
 But because this an API GW lab, let's use NAP to enforce a JWT for the API.
+
+
 
 chmod +x create_jwt_and_jwk.sh
 ./create_jwt_and_jwk.sh
