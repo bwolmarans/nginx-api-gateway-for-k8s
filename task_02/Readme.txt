@@ -10,4 +10,6 @@ kubectl create secret tls jobs-local-tls --key jobs.local.key --cert jobs.local.
 # /get-job # GET /get-job will return a random job title in json format from an ecclectic list of job titles
 # /add-job # POST /add-job will accept an array of job titles to add to the ecclectic list of possible job titles
 
-kubectl apply -f VirtualServer.yaml
+bat VirtualServer.yaml
+
+k apply -f VirtualServer.yaml
