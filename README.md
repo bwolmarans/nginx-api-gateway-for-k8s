@@ -19,7 +19,7 @@ cd ~ubuntu
 /home/ubuntu/nginx-api-gateway-for-k8s/bin/list-all-k8s-lab-resources.sh --start-over
 sudo snap install k6
 sudo apt-get install nginx ( just to make the k8s port fwding to the NIC N+ dashboard easier )
-snap install kubectl --classic
+sudo snap install kubectl --classic
 unalias kubectl
 unalias k
 alias k=kubectl
