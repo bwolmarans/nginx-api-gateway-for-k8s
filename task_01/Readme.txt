@@ -15,3 +15,5 @@ bat main.yaml
 
 k apply -f main.yaml
 
+curl http://jobs.local:30020/
+curl http://jobs.local:30010
