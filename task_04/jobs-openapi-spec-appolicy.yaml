@@ -12,6 +12,17 @@ spec:
       name: POLICY_TEMPLATE_NGINX_BASE
     open-api-files:
       - link: https://raw.githubusercontent.com/bwolmarans/nginx-api-gateway-for-k8s/refs/heads/main/task_04/jobs-openapi-spec.yaml
+    bot-defense:
+      settings:
+        isEnabled: true
+      mitigations: 
+        classes: 
+          - name: trusted-bot
+            action: alarm
+          - name: untrusted-bot
+            action: block
+          - name: malicious-bot
+            action: block
     blocking-settings:
       violations:
         - block: false
