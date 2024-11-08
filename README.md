@@ -50,7 +50,7 @@ sudo apt-get install nginx ( just to make the k8s port fwding to the NIC N+ dash
   ```bash
   sudo nginx -s reload
   ```
-now you cd to task_01 do that, then cd to task_02, do that, then to task_03, etc
+now skip task_00, just cd to task_01 do that, then cd to task_02, do that, then to task_03, etc
 
 
 
