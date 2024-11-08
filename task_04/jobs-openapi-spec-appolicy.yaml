@@ -11,7 +11,7 @@ spec:
     template:
       name: POLICY_TEMPLATE_NGINX_BASE
     open-api-files:
-      - link: https://raw.githubusercontent.com/bwolmarans/nginx-api-gateway-for-k8s/main/task_04/jobs-openapi-spec.yaml
+      - link: https://raw.githubusercontent.com/bwolmarans/nginx-api-gateway-for-k8s/refs/head/main/task_04/jobs-openapi-spec.yaml
     blocking-settings:
       violations:
         - block: false
