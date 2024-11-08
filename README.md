@@ -10,7 +10,7 @@ This is updated from the original work by Tony Marfil.
 - I couldn't get the existing jwt creation script to work, so I made another one based off Liam's JWT blog and it's in task_05 and works well
 - I added a logging profile to the NAP config so you can now see the security event logs to stderr using normal kubectl logs commands
   
-- on the k8s box, do these things before you start the tasks:
+- on the k8s box, do these things before you start the tasks (but don't copy and paste this entire block of commands, do it one at a time)
 
 ```bash
 /home/ubuntu/nginx-api-gateway-for-k8s/bin/list-all-k8s-lab-resources.sh --start-over
