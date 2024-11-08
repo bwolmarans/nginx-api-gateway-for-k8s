@@ -18,7 +18,6 @@ su ubuntu
 cd ~ubuntu
 /home/ubuntu/nginx-api-gateway-for-k8s/bin/list-all-k8s-lab-resources.sh --start-over
 sudo snap install k6
-sudo apt-get install nginx ( just to make the k8s port fwding to the NIC N+ dashboard easier )
 sudo snap install kubectl --classic
 unalias kubectl
 unalias k
@@ -28,9 +27,14 @@ cd /home/ubuntu/.kube
 microk8s config > config
 cd /home/ubuntu/nginx-api-gateway-for-k8s
 ``` 
-now you can start in task_01
 
-- add this server block to /etc/nginx/nginx.conf right before the virtual hosts section
+install nginx oss
+
+```bash
+sudo apt-get install nginx ( just to make the k8s port fwding to the NIC N+ dashboard easier )
+```
+- using root or sudo add this server block to /etc/nginx/nginx.conf right before the virtual hosts section and restart nginx
+  
   ```bash
         server {
           listen 8081 default_server;  
@@ -43,4 +47,9 @@ now you can start in task_01
   ```bash
   sudo nginx -s reload
   ```
-  
+now you cd to task_01 do that, then cd to task_02, do that, then to task_03, etc
+
+
+
+
+
