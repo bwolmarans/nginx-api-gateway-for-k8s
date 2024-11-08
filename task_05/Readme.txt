@@ -2,6 +2,12 @@ chmod +x create_jwt_and_jwk.sh
 ./create_jwt_and_jwk.sh
 kubectl create secret generic jwk-secret --from-file=api-secret.jwk --type=nginx.org/jwk
 kubectl get secret jwk-secret -o yaml
+
+echo eyJrZXlzIjoKICAgIFt7CiAgICAgICAgImsiOiJabUZ1ZEdGemRHbGphbmQwIiwKICAgICAgICAia3R5Ijoib2N0IiwKICAgICAgICAia2lkIjoiMDAwMSIKICAgIH1dCn0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCgo= | base64 -d
+
+echo ZmFudGFzdGljand0 | base64 -d
+
+
 kubectl apply -f jwt-policy.yaml
 kubectl apply -f VirtualServer.yaml
 
