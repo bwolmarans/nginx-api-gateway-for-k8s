@@ -16,3 +16,22 @@ k apply -f VirtualServer.yaml
 
 curl -k https://jobs.local/get-job
 curl -k -X POST https://jobs.local/add-job
+
+This NIC is running NGINX Plus.
+
+You can monitor the NGINX Plus API by port forwarding in the background like this and curl, and also in the UDF there is a Access method on 8081 to see it in your local web browser using a NGINX OSS proxy on this box which while strictly speaking is not required, makes it easy to handle the difficulties in port forwarding.  
+
+kubectl port-forward nginx-ingress-jccr9 8080:8080 --address 0.0.0.0 --namespace=nginx-ingress &
+
+curl http://127.0.0.1:8081/dashboard.html <-- you can hit this in your browser using the UDF access method "NGINX Plus Dashboard" which listens on https 8081
+
+And here is the server block in that NGINX proxy I mentioned:
+
+        server {
+          listen 8081 default_server;  
+          location / {
+            proxy_bind 127.0.0.1;
+            proxy_pass http://127.0.0.1:8080;
+          }  
+        }
+
