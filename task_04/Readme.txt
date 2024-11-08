@@ -24,6 +24,10 @@ you will see the security event is because curl is a non-browser client, so repe
 
 curl -H @headers.txt -k https://jobs.local/add-job --data '["jet pilot"]'
 
+However, because there is no waf, we can still do OWASP top 10 attacks like this XSS example:
+
+curl -H @headers.txt -k 'https://jobs.local/add-job?x=<script>cat%20/etc/passwd</script>' --data '["jet pilot"]'
+
 
 
 
