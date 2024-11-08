@@ -17,7 +17,8 @@ This is updated from the original work by Tony Marfil.
 ```bash
 su ubuntu
 cd ~ubuntu
-/home/ubuntu/nginx-api-gateway-for-k8s/bin/list-all-k8s-lab-resources.sh --start-over
+chmod +x /home/ubuntu/nginx-api-gateway-for-k8s/bin/cleanup.sh
+/home/ubuntu/nginx-api-gateway-for-k8s/bin/cleanup.sh
 sudo snap install k6
 sudo snap install kubectl --classic
 unalias kubectl
