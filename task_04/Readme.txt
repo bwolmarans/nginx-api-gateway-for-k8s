@@ -3,13 +3,19 @@ kubectl apply -f jobs-openapi-spec-appolicy.yaml
 kubectl apply -f app-protect-policy.yaml
 kubectl apply -f VirtualServer.yaml
 
-curl -k https://jobs.local/add-job -X POST --data '["Pro Skateboarder"]'
+curl -k https://jobs.local/add-job -X POST --data '["jet pilot"]'
 
-and now you can see the nap logs by doing the following because they are being sent to stderr:
+this will give a supportID, but how to see the waf event log?
 
-k logs -n nginx-ingress nginx-ingress-jccr9 | grep <support id> | split 's/,/\n/g'
+export SUPPORT_ID=$(curl -k https://jobs.local/add-job -X POST --data '["jet pilot"]' | jq .supportID)
+echo $SUPPORT_ID
 
-you will see it's a non-browser client, so repeat the curl with a better user agent
+kubectl logs -n nginx-ingress nginx-ingress-jccr9 | grep $SUPPORT_ID | sed 's/,/\n/g'
+
+you can see the nap logs by checking stderr, because that logging profile sends nap logs to stderr.
+I could probably spin up a NIM with SM and a box with agent and somehow send the logs to SM with more time.
+
+you will see the security event is because curl is a non-browser client, so repeat the curl with a better user agent
 
 curl -H @headers.txt -k https://jobs.local/add-job --data '["jet pilot"]'
 
