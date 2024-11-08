@@ -5,6 +5,9 @@ We will use the VirtualServer NIC custom resource for this.
 # /get-job # GET /get-job will return a random job title in json format from an ecclectic list of job titles
 # /add-job # POST /add-job will accept an array of job titles to add to the ecclectic list of possible job titles
 
+curl http://jobs.local/get-job <--this will fail, because the app isn't actually listening on /get-job.  
+We must configure our VirtualServer to look for /get-job and route the request to the correct microservice.
+
 bat VirtualServer_cleartext.yaml
 
 k apply -f VirtualServer_cleartext.yaml
