@@ -1,3 +1,7 @@
+So we have used NAP for some basic functionality, like OWASP, and Browser checking, and basic HTTP enforcement.
+
+But because this an API GW lab, let's use NAP to enforce a JWT for the API.
+
 chmod +x create_jwt_and_jwk.sh
 ./create_jwt_and_jwk.sh
 kubectl create secret generic jwk-secret --from-file=api-secret.jwk --type=nginx.org/jwk
