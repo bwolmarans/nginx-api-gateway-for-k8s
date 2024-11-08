@@ -3,7 +3,7 @@ kubectl apply -f jobs-openapi-spec-appolicy.yaml
 kubectl apply -f app-protect-policy.yaml
 kubectl apply -f VirtualServer.yaml
 
-curl -k https://jobs.local/add-job -X POST --data ["Pro Skateboarder"]
+curl -k https://jobs.local/add-job -X POST --data '["Pro Skateboarder"]'
 
 and now you can see the nap logs by doing the following because they are being sent to stderr:
 
