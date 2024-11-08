@@ -16,7 +16,7 @@ export default function () {
     // Setting request parameters, including the Authorization header and the option to ignore TLS certificate validation
     const params = {
         headers: {
-            "Authorization": "Bearer..." 
+            "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6IjAwMDEifQ.eyJuYW1lIjoiUXVvdGF0aW9uIFN5c3RlbSIsInN1YiI6InF1b3RlcyIsImlzcyI6Ik15IEFQSSBHYXRld2F5In0.ggVOHYnVFB8GVPE-VOIo3jD71gTkLffAY0hQOGXPL2I" 
             },
         insecureSkipTLSVerify: true
     };
