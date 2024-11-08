@@ -1,3 +1,8 @@
+We are now going to apply NGINX App Protect WAF. Starting with a logging profile so we can see waf event logs on stderr.
+
+I suggest take a look at each of these yaml files to understand what they are doing.
+
+
 k apply -f logging.yaml
 kubectl apply -f jobs-openapi-spec-appolicy.yaml
 kubectl apply -f app-protect-policy.yaml
