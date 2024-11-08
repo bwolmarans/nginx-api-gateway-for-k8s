@@ -1,3 +1,9 @@
+In task_01 we just curl'd directly to the pods, bypassing NIC. Now we are going to use NIC for the first time!
+
+And, we are going to use NIC to encrypt the front end data in flight, a nice use case.
+
+We will use the VirtualServer NIC custom resource for this. 
+
 # Create a TLS cert and key for 'jobs.local' host.
 
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout jobs.local.key -out jobs.local.crt -config openssl.cnf -extensions req_ext
