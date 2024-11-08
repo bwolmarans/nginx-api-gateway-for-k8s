@@ -2,3 +2,6 @@
 # calls the /get-job api endpoint and renders the job title in bold style.
 
 kubectl apply -f VirtualServer.yaml
+
+
+curl -k https://jobs.local/
