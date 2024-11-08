@@ -13,6 +13,8 @@ This is updated from the original work by Tony Marfil.
 - on the k8s box, do these things before you start the tasks (but don't copy and paste this entire block of commands, do it one at a time)
 
 ```bash
+su ubuntu
+cd ~ubuntu
 /home/ubuntu/nginx-api-gateway-for-k8s/bin/list-all-k8s-lab-resources.sh --start-over
 sudo snap install k6
 sudo apt-get install nginx ( just to make the k8s port fwding to the NIC N+ dashboard easier )
@@ -22,11 +24,11 @@ unalias k
 alias k=kubectl
 alias h='history | grep'
 cd /home/ubuntu/.kube
-microk8s config > confi
+microk8s config > config
+cd /home/ubuntu/nginx-api-gateway-for-k8s
 ``` 
+now you can start in task_01
 
-- There are several utilities in the bin subdirectory.
-- to start fresh do bin/list-all-k8s-lab-resources.sh --start-over
 - add this server block to /etc/nginx/nginx.conf right before the virtual hosts section
   ```bash
         server {
