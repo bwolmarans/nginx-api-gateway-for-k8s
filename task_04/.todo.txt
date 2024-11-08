@@ -1,2 +1,2 @@
-Where to see policy violations in the logs?
-How to configure app policy logs?
+Where to see policy violations in the logs? brett: done, logs now go to stderr, can see with k logs and the nginx pod
+How to configure app policy logs? brett: done, in the policy crd file already and a logging policy crd
