@@ -4,7 +4,8 @@ This is updated from the original work by Tony Marfil.
 
 ## Changes and Notes and Instructions
 
-- if you're reading the lab guide, you can do that, but I didn't update it, so it's better that in each task sub-directory, I updated the README with almost all the steps you will need and you can just follow that README
+- if you're reading the lab guide, you can do that, but I didn't update it, so it won't work properly, but is good information all the same
+- instead of the lab guide, in each task, I updated the README with almost all the steps you will need and you can just follow that README, maybe refer to the lab guide for that task for additional clarity if some detail is missing
 - where it says to use RDP and Firefox, instead if you want, you can use a single webshell on the k8s box for everything and use curl
 - in addition, you can also use the firefox access method on the jumphost it works well and has a little copy and paste widget to your local system on the left that works well
 - I couldn't get the existing jwt creation script to work, so I made another one based off Liam's JWT blog and it's in task_05 and works well
