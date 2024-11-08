@@ -23,7 +23,7 @@ You can monitor the NGINX Plus API by port forwarding in the background like thi
 
 kubectl port-forward nginx-ingress-jccr9 8080:8080 --address 0.0.0.0 --namespace=nginx-ingress > /dev/null &
 
-curl http://127.0.0.1:8081/dashboard.html <-- you can hit this in your browser using the UDF access method "NGINX Plus Dashboard" which listens on https 8081
+curl http://127.0.0.1:8081/ <-- you can hit this /dashboard.html in your browser using the UDF access method "NGINX Plus Dashboard" which listens on https 8081
 
 And here is the server block in that NGINX proxy I mentioned:
 
