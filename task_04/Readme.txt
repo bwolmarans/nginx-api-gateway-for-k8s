@@ -12,3 +12,5 @@ test-dns.sh
 kubectl apply -f jobs-openapi-spec-appolicy.yaml
 kubectl apply -f app-protect-policy.yaml
 kubectl apply -f VirtualServer.yaml
+
+curl -k https://jobs.local/add-job -X POST --data ["Pro Skateboarder"]
