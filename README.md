@@ -29,7 +29,7 @@ microk8s config > config
 cd /home/ubuntu/nginx-api-gateway-for-k8s
 ``` 
 
-install nginx oss
+- install nginx oss
 
 ```bash
 sudo apt-get install nginx ( just to make the k8s port fwding to the NIC N+ dashboard easier )
