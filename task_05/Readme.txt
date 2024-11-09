@@ -14,15 +14,15 @@ echo eyJrZXlzIjoKICAgIFt7CiAgICAgICAgImsiOiJabUZ1ZEdGemRHbGphbmQwIiwKICAgICAgICA
 
 echo ZmFudGFzdGljand0 | base64 -d
 
-
 kubectl apply -f jwt-policy.yaml
 kubectl apply -f VirtualServer.yaml
 
-export SUPPORT_ID=$(curl -k https://jobs.local/add-job --data '["jet pilot"]' | jq .supportID)
-kubectl logs -n nginx-ingress nginx-ingress-jccr9 | grep $SUPPORT_ID | sed 's/,/\n/g'
+export SUPPORT_ID=$(curl -X POST -k https://jobs.local/add-job --data '["jet pilot"]' | jq .supportID)
+echo $SUPPORT_ID
+kubectl logs -n nginx-ingress `kubectl get pods -o=jsonpath='{.items..metadata.name}' -n nginx-ingress` | grep $SUPPORT_ID | sed 's/,/\n/g' | grep ^violations=
 
-curl -H @headers.txt -k https://jobs.local/add-job --data '["jet pilot"]'
+curl -H @headers.txt -X POST -k https://jobs.local/add-job --data '["jet pilot"]' -H "content-type: application/json"
 
-curl -H @headers_without_authorization.txt -k https://jobs.local/add-job --data '["jet pilot"]'
+curl -H @headers_without_auth.txt -k https://jobs.local/add-job --data '["jet pilot"]'
 
 
