@@ -17,6 +17,7 @@ This is updated from the original work by Tony Marfil.
 ```bash
 su ubuntu
 cd ~ubuntu
+git clone https://github.com/bwolmarans/nginx-api-gateway-for-k8s
 chmod +x /home/ubuntu/nginx-api-gateway-for-k8s/bin/cleanup.sh
 /home/ubuntu/nginx-api-gateway-for-k8s/bin/cleanup.sh
 sudo snap install k6
