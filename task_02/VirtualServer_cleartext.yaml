@@ -1,0 +1,20 @@
+apiVersion: k8s.nginx.org/v1
+kind: VirtualServer
+metadata:
+  name: my-virtualserver
+  namespace: default
+spec:
+  host: jobs.local
+  upstreams:
+    - name: eclectic-jobs-upstream
+      service: eclectic-jobs
+      port: 3000
+  routes:
+    - path: /get-job
+      action:
+        proxy:
+          upstream: eclectic-jobs-upstream
+          rewritePath: /
+    - path: /add-job
+      action:
+        pass: eclectic-jobs-upstream
