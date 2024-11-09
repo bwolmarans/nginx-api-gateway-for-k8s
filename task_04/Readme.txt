@@ -99,10 +99,8 @@ kubectl logs -n nginx-ingress `kubectl get pods -o=jsonpath='{.items..metadata.n
 
 
 
-Now we have evaded the WAF policy.  A more complex bot defense policy, based on multiple factors beyond simple headers, would be used to combat this.
-That is outside the scope of this lab, so we will stop here.
+Now we have evaded the WAF policy.  But been caught by the bot policy?
 
-By the way, just adding these headers will not evade the mitigations in place for bad things 2 and 3. 
 
 
 
