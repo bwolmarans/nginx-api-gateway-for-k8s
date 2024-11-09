@@ -56,7 +56,7 @@ This NIC is running NGINX Plus.
 You can monitor the NGINX Plus API by port forwarding in the background like this and curl, and also in the UDF there is a Access method on 8081 to see it in your local web browser using a NGINX OSS proxy on this box which while strictly speaking is not required, makes it easy to handle the difficulties in port forwarding.  
 By the way, keep the dashboard tab opena, and keep checking this for task_03, task_04, etc you will see more things in the dashboard. 
 
-kubectl port-forward nginx-ingress-jccr9 8080:8080 --address 0.0.0.0 --namespace=nginx-ingress > /dev/null &
+kubectl port-forward `kubectl get pods -o=jsonpath='{.items..metadata.name}' -n nginx-ingress` -n nginx-ingress 8080:8080 --address 0.0.0.0 > /dev/null &
 
 You can just leave this running in the background for the rest of this entire lab.
 
