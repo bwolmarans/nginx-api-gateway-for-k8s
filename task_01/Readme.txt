@@ -8,7 +8,7 @@ curl http://jobs.local:30020/
 curl http://jobs.local:30010
 
 
-those curls will fail becaus there are no microservices, yet.
+Those curls will of course fail because there are no microservices, yet.
 let's create those now.
 
 The main HTML site has embedded JavaScript to fetch a random job from the get-job REST api endpoint.
@@ -21,6 +21,8 @@ k apply -f jobs.yaml
 bat main.yaml
 
 k apply -f main.yaml
+
+k get svc 
 
 curl http://jobs.local:30020/
 curl http://jobs.local:30010
