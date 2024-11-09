@@ -11,7 +11,8 @@ k6 run k6-jobs.js --insecure-skip-tls-verify
 
 check the row http_reqs, it could be 800 to 1000 requests per second
 
-Apply the rate-limiting policy:
+Apply the rate-limiting policy to limit to about 10 rps per JWT:
+
 k apply -f rate-limit-policy.yaml
 k apply -f VirtualServer.yaml
 
