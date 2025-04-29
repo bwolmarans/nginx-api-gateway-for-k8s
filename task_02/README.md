@@ -2,8 +2,9 @@ In task_01 we just curl'd directly to the pods, bypassing NIC. Now we are going 
 
 We will use the VirtualServer NIC custom resource for this. 
 
-/get-job # GET /get-job will return a random job title in json format from an ecclectic list of job titles
-/add-job # POST /add-job will accept an array of job titles to add to the ecclectic list of possible job titles
+GET /get-job will return a random job title in json format from an ecclectic list of job titles
+
+POST /add-job will accept an array of job titles to add to the ecclectic list of possible job titles
 
 ```bash
 curl http://jobs.local/get-job
