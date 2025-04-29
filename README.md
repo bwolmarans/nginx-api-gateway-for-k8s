@@ -41,13 +41,19 @@ cd ~ubuntu
 /home/ubuntu/nginx-api-gateway-for-k8s/bin/cleanup.sh
 ```
 
-- install nginx oss
+- install nginx oss for port-forwarding from k8s the N+ dashboard
+
+```bash
+sudo systemctl status nginx
+```
+
+if NGINX is not installed, you should because seeing the N+ dashboard is very useful. So install the oss NGINX:
 
 ```bash
 sudo apt-get install nginx ( just to make the k8s port fwding to the NIC N+ dashboard easier )
 ```
 
-- check /etc/nginx/nginx.conf first because this should have been done in the UDF you are using, if not using root or sudo add this server block to /etc/nginx/nginx.conf right before the virtual hosts section and restart nginx
+- check /etc/nginx/nginx.conf if this server block does not exist, using root or sudo add this server block to /etc/nginx/nginx.conf right before the virtual hosts section and restart nginx
   
   ```bash
         server {
