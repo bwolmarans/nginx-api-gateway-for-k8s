@@ -5,10 +5,55 @@ We will use the VirtualServer NIC custom resource for this.
 # /get-job # GET /get-job will return a random job title in json format from an ecclectic list of job titles
 # /add-job # POST /add-job will accept an array of job titles to add to the ecclectic list of possible job titles
 
-curl http://jobs.local/get-job <--this will fail, because the app isn't actually listening on port 80, nor on /get-job.  
-We must configure our VirtualServer to look for /get-job and route the request to the correct microservice.
+curl http://jobs.local/get-job
+
+This will return a web page, so something is listening, but gives a 404.  So it sort of worked, but also failed to serve the app, because the app isn't actually listening on port 80, nor on /get-job.  
+But something is listening on port 80.  What is that? That something is NGINX Ingress Controller.
+
+Remmeber, the NGINX Ingress controller pod consists of a Controller executable progam that is running, and also NGINX Plus.
+
+Let's examing the NGINX Plus configuration file to see this:
+
+First, let's find the name of our NIC:
+
+k get pods -n nginx-ingress
+
+NAMESPACE            NAME                                         READY   STATUS    RESTARTS         AGE
+nginx-ingress        nginx-ingress-gnqml                          1/1     Running   4 (5h27m ago)    172d
+
+Then, let's cat the NGINX configuration file:
+
+kubectl exec -it -n nginx-ingress nginx-ingress-gnqml -- cat /etc/nginx/nginx.conf
+
+Within this file, you can see the server block listening on 80, but you will see no upstreams.  Hence the curl succeeded on returning a web page, but it was a 404.
+
+   server {
+        # required to support the Websocket protocol in VirtualServer/VirtualServerRoutes
+        set $default_connection_header "";
+        set $resource_type "";
+        set $resource_name "";
+        set $resource_namespace "";
+        set $service "";
+
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        listen 443 ssl default_server;
+        listen [::]:443 ssl default_server;
+        ssl_reject_handshake on;
+        server_name _;
+        server_tokens "on";
+        location / {
+            return 404;
+        }
+    }
+
+To create the missing upstream, we must configure our VirtualServer to look for /get-job and route the request to the correct microservice.
+Let's take a look at that upstream config:
 
 bat VirtualServer_cleartext.yaml
+
+and then apply it:
+
 
 k apply -f VirtualServer_cleartext.yaml
 
