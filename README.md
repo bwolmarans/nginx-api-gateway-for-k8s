@@ -2,7 +2,7 @@
 
 This is updated from the original work by Tony Marfil.
 
-## Changes and Notes and Instructions
+## Changes and Notes 
 
 - if you're reading the lab guide, you can do that, but I didn't update it, so it won't work properly, but is good information all the same
 - instead of the lab guide, in each task, I updated the README with almost all the steps you will need and you can just follow that README, maybe refer to the lab guide for that task for additional clarity if some detail is missing
@@ -30,6 +30,16 @@ cd /home/ubuntu/.kube
 microk8s config > config
 cd /home/ubuntu/nginx-api-gateway-for-k8s
 ``` 
+
+## START HERE
+
+- cleanup any old config so the lab starts fresh
+
+```bash
+su ubuntu
+cd ~ubuntu
+/home/ubuntu/nginx-api-gateway-for-k8s/bin/cleanup.sh
+```
 
 - install nginx oss
 
