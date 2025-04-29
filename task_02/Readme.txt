@@ -47,15 +47,41 @@ Within this file, you can see the server block listening on 80, but you will see
         }
     }
 
+In fact, you will see nothing in the /etc/nginx/conf.d directory:
+
+kubectl exec -it -n nginx-ingress nginx-ingress-gnqml -- ls /etc/nginx/conf.d
+
 To create the missing upstream, we must configure our VirtualServer to look for /get-job and route the request to the correct microservice.
-Let's take a look at that upstream config:
+Let's take a look at that config, expressed in NIC terms:
+
 
 bat VirtualServer_cleartext.yaml
 
 and then apply it:
 
-
 k apply -f VirtualServer_cleartext.yaml
+
+We now see the upstream in the NGINX Plus config expressed in NGINX terms if we want:
+kubectl exec -it -n nginx-ingress nginx-ingress-gnqml -- ls /etc/nginx/conf.d
+vs_default_my-virtualserver.conf
+
+kubectl exec -it -n nginx-ingress nginx-ingress-gnqml -- cat /etc/nginx/conf.d/vs_default_my-virtualserver.conf
+
+upstream vs_default_my-virtualserver_eclectic-jobs-upstream {
+    zone vs_default_my-virtualserver_eclectic-jobs-upstream 512k;
+    random two least_conn;
+    server 10.1.35.166:3000 max_fails=1 fail_timeout=10s max_conns=0;
+}
+
+and also some server blocks that over-ride the default server in the /etc/nginx/nginx.conf that listens on port 80 by using the  specific server name which matches the host header:
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name jobs.local;
+
+( entire server block config is not shown here, but if you look through it all you will see the location blocks and that they point to the upstream)
+
 
 curl http://jobs.local/get-job
 
@@ -63,10 +89,12 @@ Here is what happened here, the flow:
 
 -The client requests https://jobs.local/get-job
 -The request resolves to GET http://10.1.1.4:80/get-job
--The request is received by the NGINX Plus ingress listening on port 80
--The NGINX Plus ingress rewrites URL path ‘/get-job’ to ‘/’ before sending to the eclectic-jobs service on port 3000
+-The request is received by the NGINX Plus server block we saw earlier listening on port 80
+-The NGINX Plus ingress rewrites URL path ‘/get-job’ to ‘/’ before sending to the upstream which has the eclectic-jobs service on port 3000
 -The https://jobs.local web application styles and renders the JSON response from https://jobs.local/get-job
 -The response is returned through NGINX Plus ingress back to the client
+
+
 
 curl -k https://jobs.local/get-job <-- this won't work because we're not listening on 443, yet.
 
