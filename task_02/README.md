@@ -80,10 +80,14 @@ We now see the upstream in the NGINX Plus config expressed in NGINX terms if we 
 
 ```bash
 kubectl exec -it -n nginx-ingress nginx-ingress-gnqml -- ls /etc/nginx/conf.d
+```
+```bash
 vs_default_my-virtualserver.conf
-
+```
+```bash
 kubectl exec -it -n nginx-ingress nginx-ingress-gnqml -- cat /etc/nginx/conf.d/vs_default_my-virtualserver.conf
-
+```
+```bash
 upstream vs_default_my-virtualserver_eclectic-jobs-upstream {
     zone vs_default_my-virtualserver_eclectic-jobs-upstream 512k;
     random two least_conn;
@@ -138,7 +142,21 @@ k apply -f VirtualServer.yaml
 curl -k https://jobs.local/get-job
 ```
 
-still failed because we need to create that key resource the virtual server is referencing, lets do that now:
+still failed because we need to create that key resource the virtual server is referencing.
+You can actually prove this another way by viewing the VirtualServer via the K8s api:
+
+```bash
+kubectl describe virtualserver -A
+```
+
+At the bottom you will see this event:
+
+Events:
+  Type     Reason                     Age                  From                      Message
+  ----     ------                     ----                 ----                      -------
+  Warning  AddedOrUpdatedWithWarning  3m54s                nginx-ingress-controller  Configuration for default/my-virtualserver was added or updated ; with warning(s): TLS secret jobs-local-tls is invalid: secret doesn't exist or of an unsupported type
+  
+So, lets create that secret now:
 
 # Create a TLS cert and key for 'jobs.local' host.
 ```bash
