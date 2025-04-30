@@ -76,7 +76,9 @@ bad thing 1: just curl
 ----------------------
 curl is bad, it's a bot. 
 
+```bash
 curl -k https://jobs.local/get-job
+```
 
 NAP blocks it, and gives a support ID in the response body, but we'd like to see the waf event log itself.
 You can see the nap logs by checking stderr, because that logging profile sends nap logs to stderr.
