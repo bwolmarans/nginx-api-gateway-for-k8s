@@ -151,11 +151,12 @@ kubectl describe virtualserver -A
 ```
 
 At the bottom you will see this event:
-
+```bash
 Events:
   Type     Reason                     Age                  From                      Message
   ----     ------                     ----                 ----                      -------
   Warning  AddedOrUpdatedWithWarning  3m54s                nginx-ingress-controller  Configuration for default/my-virtualserver was added or updated ; with warning(s): TLS secret jobs-local-tls is invalid: secret doesn't exist or of an unsupported type
+```
   
 So, lets create that secret now:
 
