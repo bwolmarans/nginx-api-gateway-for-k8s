@@ -2,6 +2,8 @@ In task_01 we just curl'd directly to the pods, bypassing NIC. Now we are going 
 
 We will use the VirtualServer NIC custom resource for this. 
 
+We have now used metallab and loadbalencer.yaml, so we need to as root edit /etc/hosts and change jobs.local to use 192.168.0.105 instead of 10.1.1.4
+
 GET /get-job will return a random job title in json format from an ecclectic list of job titles
 
 POST /add-job will accept an array of job titles to add to the ecclectic list of possible job titles
