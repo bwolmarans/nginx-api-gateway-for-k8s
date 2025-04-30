@@ -108,6 +108,8 @@ server {
 ( entire server block config is not shown here, but if you look through it all you will see the location blocks and that they point to the upstream)
 ```
 
+# Try it now!
+
 ```bash
 curl http://jobs.local/get-job
 ```
@@ -121,6 +123,7 @@ Here is what happened here, the flow:
 - The https://jobs.local web application styles and renders the JSON response from https://jobs.local/get-job
 - The response is returned through NGINX Plus ingress back to the client
 
+# Try with SSL
 
 ```bash
 curl -k https://jobs.local/get-job
@@ -219,4 +222,4 @@ And here is the server block in that NGINX proxy I mentioned, this should alread
         }
 
 
-Go to task_03
+Go to [Task_03](https://github.com/bwolmarans/nginx-api-gateway-for-k8s/tree/main/task_03)
