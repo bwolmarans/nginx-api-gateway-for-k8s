@@ -123,11 +123,17 @@ Here is what happened here, the flow:
 
 
 ```bash
-curl -k https://jobs.local/get-job <-- this won't work because we're not listening on 443, yet.
+curl -k https://jobs.local/get-job
 ```
 
-To get SSL to happen, we are going to use NIC to encrypt the front end data in flight, a nice use case.
-We will Create a VirutalServer Custom Resource Definition (CRD) to add TLS and proxy the API endpoints:
+This won't work because we're not listening on 443, yet.  We get an interesting error:
+
+```bash
+curl: (35) error:0A000458:SSL routines::tlsv1 unrecognized name
+```
+
+To get SSL to work, we are going to use NIC to encrypt the front end data in flight, a nice use case.
+We will Create a VirtualServer Custom Resource Definition (CRD) to add TLS and proxy the API endpoints:
 
 ```bash
 bat VirtualServer.yaml
@@ -142,8 +148,12 @@ k apply -f VirtualServer.yaml
 ```bash
 curl -k https://jobs.local/get-job
 ```
+```bash
+curl: (35) error:0A000458:SSL routines::tlsv1 unrecognized name
+```
 
-still failed because we need to create that key resource the virtual server is referencing.
+This still failed because we need to create that key resource the virtual server is referencing.
+It's unfortunate the error message says a name is not recognized when the problem is a missing key.
 You can actually prove this another way by viewing the VirtualServer via the K8s api:
 
 ```bash
