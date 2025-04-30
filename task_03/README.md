@@ -1,6 +1,6 @@
-# Stiching the App together using NIC
+# Stitching the App together using NIC
 
-This step ties together the '/' or '/index.html' HTML main page which then calls the /get-job api endpoint and renders the job title in bold style.
+This step ties uses NIC to tie together the '/' or '/index.html' HTML main page which then calls the /get-job api endpoint and renders the job title in bold style.
 
 ```bash
 bat VirtualServer.yaml
