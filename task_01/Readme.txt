@@ -26,3 +26,5 @@ sleep 20
 
 curl http://10.1.1.4:30020/
 curl http://10.1.1.4:30010
+
+now go to https://github.com/bwolmarans/nginx-api-gateway-for-k8s/tree/main/task_02
