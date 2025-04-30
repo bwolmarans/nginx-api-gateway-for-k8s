@@ -39,4 +39,4 @@ And here is that POST flow:
 -The eclectic-jobs service adds a job.
 -The response is returned through NGINX Plus ingress
 
-Go to [Task_04](https://github.com/bwolmarans/nginx-api-gateway-for-k8s/new/main/task_04)
+Go to [Task_04](https://github.com/bwolmarans/nginx-api-gateway-for-k8s/tree/main/task_04)
