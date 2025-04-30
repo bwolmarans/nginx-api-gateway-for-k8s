@@ -52,13 +52,13 @@ OK now let's configure NAP to take care of all three of these bot/abuse/hack/att
 Please take a look at each of these yaml files to understand what they are doing, and then apply them.
 
 ```bash
-bat logging.yaml
+bat -P logging.yaml
 sleep 30
-bat jobs-openapi-spec-appolicy.yaml
+bat -P jobs-openapi-spec-appolicy.yaml
 sleep 30
-bat app-protect-policy.yaml
+bat -P app-protect-policy.yaml
 sleep 30
-bat VirtualServer.yaml
+bat -P VirtualServer.yaml
 sleep 30
 k apply -f logging.yaml
 sleep 5
