@@ -54,15 +54,18 @@ Please take a look at each of these yaml files to understand what they are doing
 ```bash
 bat logging.yaml
 sleep 30
-k apply -f logging.yaml
 bat jobs-openapi-spec-appolicy.yaml
 sleep 30
-kubectl apply -f jobs-openapi-spec-appolicy.yaml
 bat app-protect-policy.yaml
 sleep 30
-kubectl apply -f app-protect-policy.yaml
 bat VirtualServer.yaml
 sleep 30
+k apply -f logging.yaml
+sleep 5
+kubectl apply -f jobs-openapi-spec-appolicy.yaml
+sleep 5
+kubectl apply -f app-protect-policy.yaml
+sleep 5
 kubectl apply -f VirtualServer.yaml
 sleep 5
 ```
