@@ -23,7 +23,9 @@ bat main.yaml
 
 k apply -f main.yaml
 
-k get svc 
+k get svc -A
+
+sleep 20
 
 curl http://jobs.local:30020/
 curl http://jobs.local:30010
