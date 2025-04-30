@@ -112,13 +112,12 @@ curl http://jobs.local/get-job
 
 Here is what happened here, the flow:
 
--The client requests https://jobs.local/get-job
--The request resolves to GET http://10.1.1.4:80/get-job
--The request is received by the NGINX Plus server block we saw earlier listening on port 80
--The NGINX Plus ingress rewrites URL path ‘/get-job’ to ‘/’ before sending to the upstream which has the eclectic-jobs service on port 3000
--The https://jobs.local web application styles and renders the JSON response from https://jobs.local/get-job
--The response is returned through NGINX Plus ingress back to the client
-
+- The client requests https://jobs.local/get-job
+- The request resolves to GET http://10.1.1.4:80/get-job
+- The request is received by the NGINX Plus server block we saw earlier listening on port 80
+- The NGINX Plus ingress rewrites URL path ‘/get-job’ to ‘/’ before sending to the upstream which has the eclectic-jobs service on port 3000
+- The https://jobs.local web application styles and renders the JSON response from https://jobs.local/get-job
+- The response is returned through NGINX Plus ingress back to the client
 
 
 ```bash
