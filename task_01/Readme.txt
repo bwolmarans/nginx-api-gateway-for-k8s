@@ -1,11 +1,8 @@
 The get-job REST api is running as a nodeport service:
-http://jobs.local:30020/
-
 The main HTML site is running as a nodeport service:
-http://jobs.local:30010/
 
-curl http://jobs.local:30020/
-curl http://jobs.local:30010
+curl http://10.1.1.4:30020/
+curl http://10.1.1.4:30010
 
 
 Those curls will of course fail because there are no microservices, yet. nothing is listening. there is no app.
@@ -27,5 +24,5 @@ k get svc -A
 
 sleep 20
 
-curl http://jobs.local:30020/
-curl http://jobs.local:30010
+curl http://10.1.1.4:30020/
+curl http://10.1.1.4:30010
