@@ -196,12 +196,17 @@ This NIC is running NGINX Plus.
 You can monitor the NGINX Plus API by port forwarding in the background like this and curl, and also in the UDF there is a Access method on 8081 to see it in your local web browser using a NGINX OSS proxy on this box which while strictly speaking is not required, makes it easy to handle the difficulties in port forwarding.  
 By the way, keep the dashboard tab opena, and keep checking this for task_03, task_04, etc you will see more things in the dashboard. 
 
+```bash
 kubectl port-forward `kubectl get pods -o=jsonpath='{.items..metadata.name}' -n nginx-ingress` -n nginx-ingress 8080:8080 --address 0.0.0.0 > /dev/null &
+```
 
 You can just leave this running in the background for the rest of this entire lab.
+Test if it works
+```bash
+curl http://127.0.0.1:8081/api
+```
 
-
-curl http://127.0.0.1:8081/ <-- you can hit this /dashboard.html in your browser using the UDF access method "NGINX Plus Dashboard" which listens on https 8081
+You can now hit this /dashboard.html in your browser using the UDF access method "NGINX Plus Dashboard" which listens on https 8081
 
 And here is the server block in that NGINX proxy I mentioned, this should already be configured if you're using the right UDF
 
