@@ -217,3 +217,6 @@ And here is the server block in that NGINX proxy I mentioned, this should alread
             proxy_pass http://127.0.0.1:8080;
           }  
         }
+
+
+Go to task_03
