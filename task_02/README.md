@@ -15,7 +15,7 @@ curl http://jobs.local/get-job
 This will return a web page, so something is listening, but gives a 404.  So it sort of worked, but also failed to serve the app, because the app isn't actually listening on port 80, nor on /get-job.  
 But something is listening on port 80.  What is that? That something is NGINX Ingress Controller.
 
-Remmeber, the NGINX Ingress controller pod consists of a Controller executable progam that is running, and also NGINX Plus.
+Rememeber, the NGINX Ingress controller pod consists of a Controller executable progam that is running, and also NGINX Plus.
 
 Let's examing the NGINX Plus configuration file to see this:
 
